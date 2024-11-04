@@ -1,7 +1,9 @@
-import { Redirect, Route } from 'react-router-dom';
-import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
+import { Link, Redirect, Route } from 'react-router-dom';
+import { IonApp, IonHeader, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import BuyPage from './components/BuyPage';
+
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -32,20 +34,46 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import MarketingScreen from './components/MarketingScreen';
 
 setupIonicReact();
 
 const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
+      {/* Change it to show only when user is logged in or blank*/}
+      <IonHeader>
+
+      </IonHeader>
+    {/* <IonHeader>
+        {"Welcome"}
+        </IonHeader> */}
+    {/* <IonTabBar slot="top">
+          <IonTabButton tab="home" href="/home">
+            <IonLabel>Home</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="buy" href="/buy">
+            <Link to="/buy">Position 2</Link>
+          </IonTabButton>
+
+          <IonTabButton tab="position3" href="/position3">
+            <IonLabel>Position 3</IonLabel>
+          </IonTabButton>
+
+          <IonTabButton tab="position4" href="/position4">
+            <IonLabel>Position 4</IonLabel>
+          </IonTabButton>
+        </IonTabBar> */}
       <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
+        <Route exact path="/home" component={Home}/>
+        <Route path="/buy" component={BuyPage} />
+        <Route path="/marketing" component={MarketingScreen} />
         <Route exact path="/">
           <Redirect to="/home" />
         </Route>
       </IonRouterOutlet>
+    
     </IonReactRouter>
   </IonApp>
 );

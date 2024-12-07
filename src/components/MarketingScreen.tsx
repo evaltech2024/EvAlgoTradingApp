@@ -1,6 +1,6 @@
 import { onAuthStateChanged, signInWithPopup, User } from "firebase/auth";
 import { useEffect, useState } from "react";
-import { auth, provider } from "../../firestore/defineFirestore";
+import { auth, provider } from "../../api/defineFirestore";
 import { IonButton } from "@ionic/react";
 
 function MarketingScreen() {

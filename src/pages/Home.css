@@ -1,0 +1,45 @@
+.home {
+  height: 100vh;
+  padding-bottom: 20px;
+}
+
+.username-display {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: var(--ion-color-dark-shade);
+}
+
+
+.stock-list {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  padding-bottom: 60px;
+  gap: 16px;
+  overflow: scroll;
+  scrollbar-width: none;
+}
+
+.home-div {
+  display: flex;
+  padding: 12px;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.title {
+    color: var(--ion-color-primary);
+    font-size: 24px;
+    font-weight: 800;
+}
+
+.user-text {
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.mode-select {
+  font-size: 20px;
+}

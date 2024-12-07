@@ -1,7 +1,8 @@
-import { Link, Redirect, Route } from 'react-router-dom';
-import { IonApp, IonHeader, IonLabel, IonRouterOutlet, IonTabBar, IonTabButton, setupIonicReact } from '@ionic/react';
+import { Redirect, Route } from 'react-router-dom';
+import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
+import "./App.css";
 import BuyPage from './components/BuyPage';
 
 
@@ -28,54 +29,37 @@ import '@ionic/react/css/display.css';
  * https://ionicframework.com/docs/theming/dark-mode
  */
 
-/* import '@ionic/react/css/palettes/dark.always.css'; */
-/* import '@ionic/react/css/palettes/dark.class.css'; */
+import '@ionic/react/css/palettes/dark.always.css';
+import '@ionic/react/css/palettes/dark.class.css';
 import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+// Components
 import MarketingScreen from './components/MarketingScreen';
+import LoginPage from './components/LoginPage';
+import LandingPage from './components/LandingPage';
+import StockHistory from './components/StockHistoryComponent';
+import StockHistoryComponent from './components/StockHistoryComponent';
 
 setupIonicReact();
 
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      {/* Change it to show only when user is logged in or blank*/}
-      <IonHeader>
-
-      </IonHeader>
-    {/* <IonHeader>
-        {"Welcome"}
-        </IonHeader> */}
-    {/* <IonTabBar slot="top">
-          <IonTabButton tab="home" href="/home">
-            <IonLabel>Home</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="buy" href="/buy">
-            <Link to="/buy">Position 2</Link>
-          </IonTabButton>
-
-          <IonTabButton tab="position3" href="/position3">
-            <IonLabel>Position 3</IonLabel>
-          </IonTabButton>
-
-          <IonTabButton tab="position4" href="/position4">
-            <IonLabel>Position 4</IonLabel>
-          </IonTabButton>
-        </IonTabBar> */}
-      <IonRouterOutlet>
-        <Route exact path="/home" component={Home}/>
-        <Route path="/buy" component={BuyPage} />
-        <Route path="/marketing" component={MarketingScreen} />
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-      </IonRouterOutlet>
-    
-    </IonReactRouter>
-  </IonApp>
-);
+function App() {
+  return(
+    <IonApp>
+   <IonReactRouter>
+     <IonRouterOutlet>
+       <Route exact path="/" component={LandingPage} />
+       <Route exact path="/login" component={LoginPage}/>
+       <Route path="/buy" component={BuyPage} />
+       <Route path="/marketing" component={MarketingScreen} />
+       <Route exact path="/home" component={Home} />
+       <Route exact path="/stock-history" component={StockHistoryComponent} />
+       {/* <Redirect to="/" /> */}
+     </IonRouterOutlet> 
+   </IonReactRouter>
+ </IonApp>
+  )
+};
 
 export default App;

@@ -49,7 +49,8 @@ function App() {
     <IonApp>
    <IonReactRouter>
      <IonRouterOutlet>
-       <Route exact path="/" component={LandingPage} />
+       <Route exact path="/" component={Home} />
+       <Route exact path="/register" component={LandingPage} />
        <Route exact path="/login" component={LoginPage}/>
        <Route path="/buy" component={BuyPage} />
        <Route path="/marketing" component={MarketingScreen} />

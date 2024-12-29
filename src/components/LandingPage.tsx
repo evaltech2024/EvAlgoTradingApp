@@ -60,12 +60,12 @@ function LandingPage() {
          {" Continue with Google"}
         </IonButton>: null}
 
-        {contextVal?.firebaseUser && !contextVal.customUser ?
+        {contextVal?.firebaseUser ?
         <>
          <IonLabel>{"Fill the below details and upload ID such as a Driver's License to start"}</IonLabel>
                 <div>
                 <IonLabel>{"Name (First, Last)"}</IonLabel>
-                <input type="text" defaultValue={contextVal?.firebaseUser?.displayName ?? ""} className="input" onChange={(e) => handleInputChange("name", e.target.value)}/>
+                <input type="text" defaultValue={contextVal?.customUser?.name ?? ""} className="input" onChange={(e) => handleInputChange("name", e.target.value)}/>
                 </div>
                 <div>
                 <IonLabel>{"Address"}</IonLabel>
@@ -76,19 +76,20 @@ function LandingPage() {
                 </div>
                 <div>
                 <IonLabel>{"Email"}</IonLabel>
-                <input type="text" defaultValue={contextVal?.firebaseUser.email ?? ""} className="input" onChange={(e) => handleInputChange("email", e.target.value)} />
+                <input type="text" defaultValue={contextVal?.customUser.email ?? ""} className="input" onChange={(e) => handleInputChange("email", e.target.value)} />
                 </div><div>
                 <IonLabel>{"Phone Number"}</IonLabel>
-                <input type="text" defaultValue={contextVal?.firebaseUser?.phoneNumber ?? ""} className="input" onChange={(e) => handleInputChange("phone", e.target.value)}  />
+                <input type="text" defaultValue={contextVal?.customUser?.phone ?? ""} className="input" onChange={(e) => handleInputChange("phone", e.target.value)}  />
                 </div>     
                 <IonButton onClick={handleSubmit}>{"Submit"}</IonButton>  
+        <IonLabel>{"We are in the process of verifying... Please check back to view your status"}</IonLabel>
+
         </> 
                
         : null}
       
 
 
-        <IonLabel>{"We are in the process of verifying... Please check back to view your status"}</IonLabel>
           {/* <IonRouterLink routerLink="/home">{"Sign Up"}</IonRouterLink> */}
         </div>
       </div>

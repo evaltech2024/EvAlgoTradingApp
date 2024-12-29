@@ -248,7 +248,7 @@ function StockCard(props: { stockItem: TradeItem }) {
           </div>      
              <div className="buttons-div">
               <IonButton fill="outline" color="dark" routerLink='/sell' className="sell-button" disabled={stockItem.method !== "sell"}>{"SELL"}</IonButton>
-             <IonButton routerLink={ userType ? '/buy': '/'}  className="buy-button" disabled={stockItem.method !== "buy"}>{"BUY"}</IonButton>
+             <IonButton routerLink={ userType ? '/buy': '/register'}  className="buy-button" disabled={stockItem.method !== "buy"}>{"BUY"}</IonButton>
              </div>        
         </IonCol>
       </IonRow>

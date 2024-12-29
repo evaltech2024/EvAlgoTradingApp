@@ -59,28 +59,34 @@ function LandingPage() {
           <IonButton expand="block" fill="outline" color="light" onClick={() => signInWithGoogle()}>
          {" Continue with Google"}
         </IonButton>: null}
-      
-        <IonLabel>{"Fill the below details and upload ID such as a Driver's License to start"}</IonLabel>
-        <div>
-        <IonLabel>{"Name (First, Last)"}</IonLabel>
-        <input type="text" defaultValue={contextVal?.customUser?.name ?? ""} className="input" onChange={(e) => handleInputChange("name", e.target.value)}/>
-        </div>
-        <div>
-        <IonLabel>{"Address"}</IonLabel>
-        <input type="text" className="input" onChange={(e) => handleInputChange("address", e.target.value)}  />
-        </div><div>
-        <IonLabel>{"ID#"}</IonLabel>
-        <input type="text" className="input" onChange={(e) => handleInputChange("idNumber", e.target.value)} />
-        </div>
-        <div>
-        <IonLabel>{"Email"}</IonLabel>
-        <input type="text" defaultValue={contextVal?.customUser?.email ?? ""} className="input" onChange={(e) => handleInputChange("email", e.target.value)} />
-        </div><div>
-        <IonLabel>{"Phone Number"}</IonLabel>
-        <input type="text" defaultValue={contextVal?.customUser?.phone ?? ""} className="input" onChange={(e) => handleInputChange("phone", e.target.value)}  />
-        </div>
 
-        <IonButton onClick={handleSubmit}>{"Submit"}</IonButton>
+        {contextVal?.firebaseUser && !contextVal.customUser ?
+        <>
+         <IonLabel>{"Fill the below details and upload ID such as a Driver's License to start"}</IonLabel>
+                <div>
+                <IonLabel>{"Name (First, Last)"}</IonLabel>
+                <input type="text" defaultValue={contextVal?.firebaseUser?.displayName ?? ""} className="input" onChange={(e) => handleInputChange("name", e.target.value)}/>
+                </div>
+                <div>
+                <IonLabel>{"Address"}</IonLabel>
+                <input type="text" className="input" onChange={(e) => handleInputChange("address", e.target.value)}  />
+                </div><div>
+                <IonLabel>{"ID#"}</IonLabel>
+                <input type="text" className="input" onChange={(e) => handleInputChange("idNumber", e.target.value)} />
+                </div>
+                <div>
+                <IonLabel>{"Email"}</IonLabel>
+                <input type="text" defaultValue={contextVal?.firebaseUser.email ?? ""} className="input" onChange={(e) => handleInputChange("email", e.target.value)} />
+                </div><div>
+                <IonLabel>{"Phone Number"}</IonLabel>
+                <input type="text" defaultValue={contextVal?.firebaseUser?.phoneNumber ?? ""} className="input" onChange={(e) => handleInputChange("phone", e.target.value)}  />
+                </div>     
+                <IonButton onClick={handleSubmit}>{"Submit"}</IonButton>  
+        </> 
+               
+        : null}
+      
+
 
         <IonLabel>{"We are in the process of verifying... Please check back to view your status"}</IonLabel>
           {/* <IonRouterLink routerLink="/home">{"Sign Up"}</IonRouterLink> */}

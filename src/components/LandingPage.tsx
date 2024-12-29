@@ -60,7 +60,7 @@ function LandingPage() {
          {" Continue with Google"}
         </IonButton>: null}
 
-        {contextVal?.firebaseUser ?
+        {contextVal?.firebaseUser && contextVal.customUser.approvedStatus === 0 ?
         <>
          <IonLabel>{"Fill the below details and upload ID such as a Driver's License to start"}</IonLabel>
                 <div>
@@ -90,10 +90,8 @@ function LandingPage() {
       
 
 
-          {/* <IonRouterLink routerLink="/home">{"Sign Up"}</IonRouterLink> */}
         </div>
       </div>
-      {/* <IonButton routerLink="/home">{"Submit"}</IonButton> */}
     </IonContent>
   </>
   )

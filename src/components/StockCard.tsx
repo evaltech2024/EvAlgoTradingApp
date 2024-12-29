@@ -201,7 +201,7 @@ function StockCard(props: { stockItem: TradeItem }) {
 
   const contextValues = useContext(AppContext)
 
-  const userType = "promoted" in userPermissions[contextValues?.customUser.userType ?? ""] 
+  const userType = contextValues?.customUser.userType === "promoted"
   
 
 
@@ -248,7 +248,7 @@ function StockCard(props: { stockItem: TradeItem }) {
           </div>      
              <div className="buttons-div">
               <IonButton fill="outline" color="dark" routerLink='/sell' className="sell-button" disabled={stockItem.method !== "sell"}>{"SELL"}</IonButton>
-             <IonButton routerLink={ userType ? '/buy': '/register'}  className="buy-button" disabled={stockItem.method !== "buy"}>{"BUY"}</IonButton>
+             <IonButton routerLink={ userType  ? '/buy': '/register'}  className="buy-button" disabled={stockItem.method !== "buy"}>{"BUY"}</IonButton>
              </div>        
         </IonCol>
       </IonRow>

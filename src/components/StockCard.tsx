@@ -1,19 +1,77 @@
 import { IonButton, IonCol, IonIcon, IonLabel, IonProgressBar, IonRow, IonTitle } from '@ionic/react';
 import "./StockCard.css";
-import { StockHistory, TradeItem } from './objects';
+import { SnapshotInfo, StockHistory, StockSnapshot, TradeItem, userPermissions } from './objects';
 import { addIcons } from 'ionicons';
 import { barChartOutline } from 'ionicons/icons';
-import { fetchStockHistory, getMockData, updateStockHistory } from "../../api/apiCalls";
-import { useEffect, useState } from 'react';
+import { createParams, fetchStockHistory, fetchStockSnapshot, getMockData, getStockData, options, updateStockHistory } from "../../api/apiCalls";
+import { useContext, useEffect, useState } from 'react';
+import { AppContext } from '../AppContext';
+
+
 
 addIcons({
   'bar-chart-outline': barChartOutline,
 });
 
+export interface MyHistory {
+  stockName: string
+}
+
 function StockCard(props: { stockItem: TradeItem }) {
 
   const { stockItem } = props;
-  const [stockData, setStockData] = useState(getMockData());
+  const [stockData, setStockData] = useState<SnapshotInfo>({
+    minuteBar: {
+      c: 10,
+      h: 0,
+      l: 0,
+      n: 0,
+      o: 0,
+      t: '',
+      v: 0,
+      vw: 0
+    },
+    prevDailyBar: {
+      c: 0,
+      h: 0,
+      l: 0,
+      n: 0,
+      o: 0,
+      t: '',
+      v: 0,
+      vw: 0
+    },
+    dailyBar: {
+      c: 0,
+      h: 0,
+      l: 0,
+      n: 0,
+      o: 0,
+      t: '',
+      v: 0,
+      vw: 0
+    },
+    latestQuote: {
+      ap: 0,
+      as: 0,
+      ax: '',
+      bp: 0,
+      bs: 0,
+      bx: '',
+      c: [],
+      t: '',
+      z: ''
+    },
+    latestTrade: {
+      c: [],
+      i: 0,
+      p: 0,
+      s: 0,
+      t: '',
+      z: ''
+    },
+    id: ""
+  });
   const [dailyPercentChange, setDailyPercentChange] = useState<number>(0);
   const [lastDayPercentChange, setLastDayPercentChange] = useState<number>(0);
   const [evalOverall, setEvalOverall] = useState<number>(0);
@@ -22,10 +80,17 @@ function StockCard(props: { stockItem: TradeItem }) {
   const [stocksHistory, setStocksHistory] = useState<StockHistory[]>([]);
 
   useEffect(() => {
-    fetchStockHistory().then((data) => {
+    fetchStockHistory(stockItem.symbol).then((data) => {
       setStocksHistory(data)
     }).catch((err) => console.log(err))
   }, [])
+
+  useEffect(() => {
+    fetchStockSnapshot(stockItem.symbol).then((data) => {
+      setStockData(data)
+    }).catch((err) => console.log(err))
+  }, [])
+
 
 
   useEffect(() => {
@@ -94,9 +159,7 @@ function StockCard(props: { stockItem: TradeItem }) {
     setLastDayPercentChange(((stockData.prevDailyBar.o - stockData.prevDailyBar.c) / stockData.prevDailyBar.c) * 100);
     setLastDayPercentChange((c) => parseFloat(c.toFixed(2)))
 
-  }, [stockData])
-
-  
+  }, [stockData])  
   
 
   // useEffect(() => {
@@ -106,35 +169,39 @@ function StockCard(props: { stockItem: TradeItem }) {
   //       (60 - now.getSeconds()) * 1000 - now.getMilliseconds();
 
 
-  //       setTimeout(() => {
-  //       fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams([stockItem.symbol])}&feed=iex`, options)
-  //     .then(res => res.json())
-  //     .then(res => console.log(res))
-  //     .catch(err => console.error(err));  
+        setTimeout(() => {
+      // console.log(getStockData())
 
-  //     const intervalId = setInterval(() => {
-  //         fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams([stockItem.symbol])}&feed=iex`, options)
-  //     .then(res => res.json())
-  //     .then(res => console.log(res))
-  //     .catch(err => console.error(err));  
-  //       }, 60 * 1000);
+      const intervalId = setInterval(() => {
+      //     fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams()}&feed=iex`, options)
+      // .then(res => res.json())
+      // .then(res => console.log(res))
+      // .catch(err => console.error(err));  
+        }, 60 * 1000);
 
-  //       return () => clearInterval(intervalId);
-  //     }, millisecondsUntilNextMinute);
+        return () => clearInterval(intervalId);
+      }, 60000);
 
-  //   // const intervalId = setInterval(() => {
-  //   //   fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams([stockItem.symbol])}&feed=iex`, options)
-  //   //   .then(res => res.json())
-  //   //   .then(res => console.log(res))
-  //   //   .catch(err => console.error(err));  
-  //   // }, 1000);
+    // const intervalId = setInterval(() => {
+    //   fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams()}&feed=iex`, options)
+    //   .then(res => res.json())
+    //   .then(res => console.log(res))
+    //   .catch(err => console.error(err));  
+    // }, 1000);
 
-  //   // return () => {
-  //   //   clearInterval(intervalId);
-  //   // };
+    // return () => {
+    //   clearInterval(intervalId);
+    // };
     
   // },[])
 
+  const handleHistory = () => {
+    localStorage.setItem("stockSymbol", stockItem.symbol);
+  }
+
+  const contextValues = useContext(AppContext)
+
+  const userType = "promoted" in userPermissions[contextValues?.customUser.userType ?? ""] 
   
 
 
@@ -153,7 +220,7 @@ function StockCard(props: { stockItem: TradeItem }) {
             <IonLabel className="eval-gain-percent">
            {"EvAlGO Overall: "}{evalOverall} {"%"}
           </IonLabel>
-          <IonButton size='small' routerLink='/stock-history'>
+          <IonButton size='small' routerLink='/stock-history' onClick={handleHistory}>
              <IonIcon  icon='bar-chart-outline' />
              </IonButton>
             </div>
@@ -180,8 +247,8 @@ function StockCard(props: { stockItem: TradeItem }) {
           </IonLabel>
           </div>      
              <div className="buttons-div">
-              <IonButton fill="outline" routerLink='/sell' color="danger" className="sell-button" disabled={stockItem.method[0] !== "sell"}>{"SELL"}</IonButton>
-             <IonButton routerLink='/buy' className="buy-button" disabled={stockItem.method[0] !== "buy"}>{"BUY"}</IonButton>
+              <IonButton fill="outline" color="dark" routerLink='/sell' className="sell-button" disabled={stockItem.method !== "sell"}>{"SELL"}</IonButton>
+             <IonButton routerLink={ userType ? '/buy': '/'}  className="buy-button" disabled={stockItem.method !== "buy"}>{"BUY"}</IonButton>
              </div>        
         </IonCol>
       </IonRow>

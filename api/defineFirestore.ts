@@ -17,12 +17,13 @@ const auth = getAuth(app);
 const provider = new GoogleAuthProvider();
 
 
-signInAnonymously(auth)
-  .then(() => {
-    console.log("Signed in for testing");
-  })
-  .catch((error) => {
-    console.error("Error signing in for testing:", error);
-  });
+
+// signInAnonymously(auth)
+//   .then(() => {
+//     console.log("Signed in for testing");
+//   })
+//   .catch((error) => {
+//     console.error("Error signing in for testing:", error);
+//   });
 
 export { db, auth, provider };

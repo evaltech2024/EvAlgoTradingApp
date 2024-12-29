@@ -1,17 +1,17 @@
 import { useContext, useEffect, useState } from 'react';
-import { StockHistory, TradeItem } from '../components/objects';
-import { IonHeader, IonContent, IonLabel, IonToggle } from '@ionic/react';
+import { StockHistory, StockSnapshot, TradeItem } from '../components/objects';
+import { IonHeader, IonContent, IonLabel, IonToggle, IonInfiniteScroll, IonInfiniteScrollContent } from '@ionic/react';
 import StockCard from '../components/StockCard';
 import { AppContext } from '../AppContext';
 import "./Home.css";
-import { createParams, fetchTrades, options } from "../../api/apiCalls";
+import { createParams, fetchStockSnapshot, fetchTrades, options } from "../../api/apiCalls";
+import { User } from 'firebase/auth';
 
 
 
 function Home() {
   const [stocksInfo, setStocksInfo] = useState<TradeItem[]>();
   const [stockSymbols, setStockSymbols] = useState<string[]>([]);
-
 
 
   useEffect(() => {
@@ -91,7 +91,6 @@ function Home() {
   //   }, 60000);
 
 
-
   const context = useContext(AppContext);
   const toggleTheme = (e: CustomEvent) => {
     e.detail.checked ? context?.changeTheme("dark"): context?.changeTheme("light")
@@ -100,9 +99,9 @@ function Home() {
   return (
     <div className="home">
     <IonHeader className="username-display">
-      {context?.user  ? 
+      {context?.customUser  ? 
          <IonLabel className="user-text">
-          {"Welcome "}{context.user.email}
+          {"Welcome "}{context.customUser.email}
          </IonLabel>
           : null}
         <IonToggle className="mode-select" color="dark" slot='end' defaultChecked={false} onIonChange={toggleTheme}>{"Dark Mode"}</IonToggle>
@@ -111,12 +110,24 @@ function Home() {
     <IonContent className="ion-padding">        
         <div className="stock-list">
       <IonLabel className="title">{"Trending"}</IonLabel>
-          {stocksInfo?.map((item, index) =>{
+      {stocksInfo?.map((item, index) =>{
             return (
               index < 10 ?<StockCard stockItem={item} key={index} /> : null
             )
           }
-           )}
+           )}    
+      {/* <IonInfiniteScroll>
+        <IonInfiniteScrollContent loadingText="Please wait..." loadingSpinner="bubbles">
+        {stocksInfo?.map((item, index) =>{
+            return (
+              index < 10 ?<StockCard stockItem={item} key={index} /> : null
+            )
+          }
+           )}  
+        </IonInfiniteScrollContent>
+      </IonInfiniteScroll> */}
+
+    
         </div>
     </IonContent>
   </div>

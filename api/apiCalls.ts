@@ -1,13 +1,14 @@
-import { collection, doc, getDocs, setDoc } from "firebase/firestore";
-import { StockHistory, TradeItem } from "../src/components/objects";
+import { addDoc, collection, doc, getDoc, getDocs, limit, query, setDoc, where } from "firebase/firestore";
+import { PromotedUserDetails, SnapshotInfo, StockHistory, StockSnapshot, TradeItem } from "../src/components/objects";
 import { db } from "./defineFirestore";
+import { User } from "firebase/auth";
 
 export const options = {
   method: 'GET',
   headers: {
     accept: 'application/json',
-    'APCA-API-KEY-ID': 'PK95G4ZU6X2J1R87MF2M',
-    'APCA-API-SECRET-KEY': 'Ud5F5MUfkDc73Q4AvReOa5tQfYW0PTPgmwIxchem'
+    'APCA-API-KEY-ID': 'AKHANCIT35S1XKPZCUR2',
+    'APCA-API-SECRET-KEY': 'KpbWo7pOiPTNCE52CgiKd9C9aXub3Kd98LnYg8Eq'
   }
 };
 
@@ -86,6 +87,7 @@ export const getStockData = (stocks: string[]) => {
   fetch(`https://data.alpaca.markets/v2/stocks/snapshots?symbols=${createParams(stocks)}&feed=iex`, options)
 .then(res => res.json())
 .then(res => data = (res))
+// .then((data) => console.log(data))
 .catch(err => console.error(err));
 
 return data;
@@ -101,10 +103,11 @@ export const fetchTrades = async () : Promise<TradeItem[]> => {
   return itemsList;
 };
 
-export const fetchStockHistory = async () : Promise<StockHistory[]> => {
+export const fetchStockHistory = async (symbol: string) : Promise<StockHistory[]> => {
   const itemsCollection = collection(db, "stockHistory"); 
-  const itemsSnapshot = await getDocs(itemsCollection);
-  const itemsList = itemsSnapshot.docs.map((doc) => ({
+  const q = query(itemsCollection, where("symbol", "==", symbol)); 
+  const querySnapshot = await getDocs(q);
+  const itemsList = querySnapshot.docs.map((doc) => ({
     id: doc.id,
     ...doc.data(),
   })) as StockHistory[];
@@ -125,14 +128,37 @@ export const updateStockHistory = async (stockHistory: StockHistory[]) => {
     }
   };
 
-// export const fetchStockHistory = async (symbol: string) : Promise<StockHistory[]> => {
-  
-//   const usersRef = collection(db, "stockHistory"); 
-//   const q = query(usersRef, where("symbol", "==", symbol)); 
 
-//   const querySnapshot = await getDocs(q);
-//   const stockHistory = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })) as StockHistory[];
-//   return stockHistory;
-// };
+export const fetchStockSnapshot = async (symbol: string) : Promise<SnapshotInfo> => {
+
+  const usersRef = collection(db, "stockSnapshot"); 
+  const q = query(usersRef, where("symbol", "==", symbol), limit(1)); 
+  const querySnapshot = await getDocs(q)
+  const stockSnapshot = querySnapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }))[0] as StockSnapshot;
+
+  console.log(stockSnapshot.snapshot[symbol])
+
+  return stockSnapshot.snapshot[symbol] as SnapshotInfo;
+};
 
 
+export const updatePromotedUserDetails = async (promotedUserDetails: PromotedUserDetails) => {
+  const userCollection = collection(db, "promotedUsers"); 
+
+  try {
+    const docRef = await addDoc(userCollection, promotedUserDetails);
+      console.log(`Added document with ID: ${promotedUserDetails.email}`);
+  } catch (error) {
+    console.error('Error adding data: ', error);
+  }
+}
+
+export const getUserData = async (email: string) : Promise<PromotedUserDetails> => {
+
+  const usersRef = collection(db, "promotedUsers"); 
+  const q = query(usersRef, where("email", "==", email), limit(1)); 
+  const querySnapshot = await getDocs(q)
+  const userSnapshot = querySnapshot.docs.map((doc) => ({  ...doc.data() }))[0] as PromotedUserDetails;
+  return userSnapshot;
+
+};

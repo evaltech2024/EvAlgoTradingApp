@@ -1,44 +1,39 @@
 import { useState, useEffect } from "react";
 import { fetchStockHistory } from "../../api/apiCalls";
 import { StockHistory } from "./objects";
-import { IonCol, IonGrid, IonHeader, IonLabel, IonRow, IonToggle } from "@ionic/react";
+import { IonCol, IonGrid, IonHeader, IonRow } from "@ionic/react";
+import "./StockHistoryComponent.css"
 
 function StockHistoryComponent() {
 
   const [stocksHistory, setStocksHistory] = useState<StockHistory[]>([]);
 
-  console.log(stocksHistory)
- 
   const columns = ["Symbol", "method", "strategy", "start", "end", "gain", "overall"]
+  const stock = localStorage.getItem("stockSymbol")
 
   useEffect(() => {
-    fetchStockHistory().then((data) => {
-    const respectiveHistory = data.filter((hist) => hist.symbol === "SNTI")
-      setStocksHistory(respectiveHistory)
-
-      console.log(data)
-    }).catch((err) => console.log(err))
+    if(stock) {
+      fetchStockHistory(stock).then((data) => {
+        const respectiveHistory = data.filter((hist) => hist.symbol == stock)
+          setStocksHistory(respectiveHistory)
+    
+          console.log(data)
+        }).catch((err) => console.log(err))
+    }
   }, [])
 
   return (
-    <div style={{overflow: "scroll", paddingBottom: "100px"}}>
-         <IonHeader>
-    
-         <IonRow>
+    <div style={{overflow: "scroll", scrollbarWidth: "none", paddingBottom: "1000px"}}>
+      <IonHeader className="header">  
+        <IonRow className="table-header">
              {columns.map((col, index) => (
             <IonCol key={index}>{col}</IonCol>
           ))}
         </IonRow>
-    </IonHeader>
-     <IonGrid>
-        {/* <IonRow>{"Stocks Info"}</IonRow>
-        <IonRow>
-             {columns.map((col, index) => (
-            <IonCol key={index}>{col}</IonCol>
-          ))}
-        </IonRow> */}
+      </IonHeader>
+     <IonGrid  className="custom-table">
         {stocksHistory.map((hist, index) => (
-          <IonRow key={index}>
+          <IonRow key={index} className="table-row">
           <IonCol>{hist.symbol}</IonCol>
           <IonCol>{hist.method}</IonCol>
           <IonCol>{hist.strategy}</IonCol>

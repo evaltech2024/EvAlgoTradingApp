@@ -7,6 +7,7 @@
 
 .sign-up {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   width: 100%;
   justify-content: center;
@@ -15,9 +16,14 @@
 
 .auth-screen {
   display: flex;
-  flex-direction: column;
+  /* flex-direction: column; */
   align-items: center;
   gap: 24px;
   width: 100%;
 }
 
+
+.input {
+  background: white;
+  color: black
+}

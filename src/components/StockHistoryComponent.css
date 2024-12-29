@@ -1,0 +1,52 @@
+.history-grid {
+  /* display: flex; */
+  /* background-color: red; */
+  overflow: scroll;
+}
+
+.header {
+  padding: 12px;
+  /* background: var(--ion-color-dark-shade); */
+}
+
+.address-manager {
+  padding: 16px;
+}
+
+.table-toolbar {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.custom-table {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  overflow: scroll;
+  padding-bottom: 1000px;
+}
+
+.table-header {
+  color: white;
+  font-weight: bold;
+  text-align: left;
+}
+
+.table-row {
+  border-bottom: 1px solid #ccc;
+}
+
+.table-row:last-child {
+  border-bottom: none;
+}
+
+.table-row IonCol {
+  padding: 8px;
+}
+
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 16px;
+}

@@ -55,7 +55,7 @@ function LandingPage() {
        
         <div className="sign-up">
           <IonLabel>{"Register to have US $100.00 in your account for trading live stocks?"}</IonLabel>
-          {!contextVal?.customUser ?
+          {!contextVal?.firebaseUser ?
           <IonButton expand="block" fill="outline" color="light" onClick={() => signInWithGoogle()}>
          {" Continue with Google"}
         </IonButton>: null}
